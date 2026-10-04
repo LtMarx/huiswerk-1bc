@@ -1,7 +1,7 @@
 # CLAUDE.md — huiswerk-thijs
 
-Website met huiswerk-hulp-apps voor Thijs (brugklas), gehost op GitHub Pages.
-Alle teksten voor Thijs zijn Nederlandstalig en kindvriendelijk.
+Website "Huiswerk 1BC" met huiswerk-hulp-apps voor de toetsen van klas 1BC van De Amersfoortse Berg (brugklas; gemaakt voor Thijs, gebruikt door de hele klas), gehost op GitHub Pages.
+Alle teksten voor de leerlingen zijn Nederlandstalig en kindvriendelijk. Toetsdata gelden voor klas 1BC.
 
 ## Mapstructuur
 
@@ -41,7 +41,7 @@ engels/02-unit-2/irregular-verbs.html
 - **localStorage-sleutels altijd met een prefix per app en per naam.** De site vraagt bezoekers hun voornaam (`huiswerk:naam`, lijst in `huiswerk:namen`; alleen op het apparaat) zodat klasgenoten de site ook kunnen gebruiken. De leermodule regelt dit vanzelf: `id: 'frans-u2-woordjes'` → sleutel `frans-u2-woordjes-v1@<naam>`. Patroon voor `id`: `<vak>-<blok-afkorting>-<app>`. Nooit een `id` hergebruiken of later veranderen. Een zelfstandige app gebruikt `Leermodule.Profiel.naam()` (of leest `huiswerk:naam`) en zet de naam in zijn eigen sleutels.
 - Geen eigen "terug naar overzicht"-knop: de Action voegt die bij het publiceren toe (vast linksonder). De leermodule houdt daar al ruimte voor vrij.
 - Werkt op laptop én mobiel/iPad: responsive, touch targets ≥ 44px, invoervelden ≥ 16px tekst (anders zoomt iOS in), licht/donker via `prefers-color-scheme`.
-- **Geen persoonsgegevens** in de repo (achternaam, school, klas, adres, foto's, cijfers): de repo is publiek.
+- **Geen persoonsgegevens** in de repo (achternamen, adressen, foto's van leerlingen, cijfers, namen van klasgenoten): de repo is publiek. Schoolnaam en klas staan bewust in de sitetitel.
 
 ## Werkwijze: "voeg deze app toe voor <vak> <blok>"
 

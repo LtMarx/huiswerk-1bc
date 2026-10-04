@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Alle huiswerk-apps van Thijs op één plek">
-<title>Huiswerk van Thijs</title>
+<meta name="description" content="Alle huiswerk-apps voor klas 1BC van De Amersfoortse Berg op één plek">
+<title>Huiswerk 1BC · De Amersfoortse Berg</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <style>
   :root {
@@ -155,13 +155,14 @@
     max-width: 45vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .groet { margin: -4px 0 4px; color: var(--zacht); }
+  .school { margin: -6px 0 14px; color: var(--zacht); font-size: 15px; font-weight: 600; }
   footer { margin-top: 40px; text-align: center; font-size: 13px; color: var(--zacht); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header id="kop"><h1>📚 Huiswerk van Thijs</h1></header>
+  <header id="kop"><h1>📚 Huiswerk 1BC</h1></header>
   <main id="inhoud" aria-live="polite"><p class="leeg">Even laden…</p></main>
   <footer id="voet"></footer>
 </div>
@@ -319,10 +320,10 @@
   }
 
   function toonWie() {
-    document.title = 'Wie ben jij? · Huiswerk van Thijs';
+    document.title = 'Wie ben jij? · Huiswerk 1BC';
     var naam = huidigeNaam(), namen = alleNamen();
-    zetKop('📚 Huiswerk van Thijs', naam ? '#' : null);
-    inhoud.innerHTML = '<section class="wie"><h2>👋 Wie ben jij?</h2>' +
+    zetKop('📚 Huiswerk 1BC', naam ? '#' : null);
+    inhoud.innerHTML = '<p class="school">🏫 De Amersfoortse Berg · klas 1BC</p><section class="wie"><h2>👋 Wie ben jij?</h2>' +
       (namen.length ? '<p style="margin:0 0 8px">Tik op je naam:</p><div class="namen">' + namen.map(function (n) {
         return '<button type="button" data-naam="' + esc(n) + '">' + (n === naam ? '✓ ' : '') + esc(n) + '</button>';
       }).join('') + '</div><p style="margin:0 0 8px">Of typ een nieuwe naam:</p>' : '<p style="margin:0 0 12px">Typ je voornaam. Dan worden jouw oefeningen en cijfers apart bewaard.</p>') +
@@ -337,12 +338,12 @@
 
   function toonHome() {
     if (!huidigeNaam()) return toonWie();
-    document.title = 'Huiswerk van Thijs';
-    zetKop('📚 Huiswerk van Thijs');
+    document.title = 'Huiswerk 1BC · De Amersfoortse Berg';
+    zetKop('📚 Huiswerk 1BC');
     kop.insertAdjacentHTML('beforeend', profielKnop());
     var actief = manifest.vakken.filter(function (v) { return !vakArchief(v); });
     var archief = manifest.vakken.filter(vakArchief);
-    var html = '<p class="groet">Hoi ' + esc(huidigeNaam()) + '! Wat ga je vandaag doen?</p>' + komendeToetsen();
+    var html = '<p class="school">🏫 De Amersfoortse Berg · klas 1BC</p><p class="groet">Hoi ' + esc(huidigeNaam()) + '! Wat ga je vandaag doen?</p>' + komendeToetsen();
     html += '<h2>Kies een vak</h2>';
     html += actief.length
       ? '<div class="tegels">' + actief.map(vakTegel).join('') + '</div>'
@@ -368,7 +369,7 @@
   }
 
   function toonVak(vak) {
-    document.title = vak.naam + ' · Huiswerk van Thijs';
+    document.title = vak.naam + ' · Huiswerk 1BC';
     zetKop(esc(vak.emoji) + ' ' + esc(vak.naam), '#', '<a href="#">Overzicht</a>');
     var actief = vak.blokken.filter(function (b) { return !isArchief(b); });
     var archief = vak.blokken.filter(isArchief).reverse(); // nieuwste eerst
@@ -431,7 +432,7 @@
   }
 
   function toonFout(err) {
-    zetKop('📚 Huiswerk van Thijs');
+    zetKop('📚 Huiswerk 1BC');
     var lokaal = location.protocol === 'file:';
     inhoud.innerHTML = '<div class="fout"><div class="groot">😕</div>' +
       '<p><strong>Oeps, het overzicht kon niet geladen worden.</strong></p>' +
