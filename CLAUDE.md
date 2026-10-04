@@ -1,4 +1,4 @@
-# CLAUDE.md — huiswerk-thijs
+# CLAUDE.md — huiswerk-1bc
 
 Website "Huiswerk 1BC" met huiswerk-hulp-apps voor de toetsen van klas 1BC van De Amersfoortse Berg (brugklas; gemaakt voor Thijs, gebruikt door de hele klas), gehost op GitHub Pages.
 Alle teksten voor de leerlingen zijn Nederlandstalig en kindvriendelijk. Toetsdata gelden voor klas 1BC.

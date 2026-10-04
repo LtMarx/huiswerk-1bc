@@ -1,7 +1,7 @@
 # Huiswerk 1BC · De Amersfoortse Berg
 
 Eén website met huiswerk-hulp-apps voor de toetsen van klas 1BC van De Amersfoortse Berg (gemaakt voor Thijs, te gebruiken door de hele klas), gehost op GitHub Pages.
-Iedereen heeft maar één link nodig: `https://ltmarx.github.io/huiswerk-thijs/`
+Iedereen heeft maar één link nodig: `https://ltmarx.github.io/huiswerk-1bc/`
 
 ## Hoe het werkt
 
