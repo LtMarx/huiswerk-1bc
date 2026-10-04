@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 1. Titel en omschrijving: deze verschijnen in het menu van de site. -->
+<title>Sjabloon – leerstof</title>
+<meta name="description" content="Voorbeeld van een leermodule met uitleg, kaartjes, oefenvragen en een toets">
+<!-- 2. Niet veranderen: de standaard huisstijl en engine (pad klopt voor <vak>/<blok>/<app>.html). -->
+<link rel="stylesheet" href="../../_leermodule/v1/leermodule.css">
+</head>
+<body>
+<div id="app"><noscript>Zet JavaScript aan om deze app te gebruiken.</noscript></div>
+<script src="../../_leermodule/v1/leermodule.js"></script>
+<script>
+/* 3. Alleen hieronder de inhoud invullen. Uitleg van alle velden: _leermodule/README.md */
+Leermodule.start({
+  id: 'vak-blok-app',                 // uniek, kleine letters: wordt de localStorage-sleutel (bijv. 'gs-h1-prehistorie')
+  titel: 'Geschiedenis oefenen',
+  ondertitel: 'Hoofdstuk 1: jagers en boeren',
+  toets: { aantallen: [10, 15, 25], standaard: 15 },   // optioneel
+
+  onderdelen: [
+    {
+      id: 'p1', titel: 'Jagers en verzamelaars', sub: 'Paragraaf 1.1 (blz. 8–11)',
+
+      // Leerstof: losse blokken die je kunt openklappen. HTML mag.
+      uitleg: [
+        { kop: 'Wat moet je weten?', open: true, html: `
+          <p>Heel lang geleden leefden mensen als <span class="mark">jagers en verzamelaars</span>.
+          Ze trokken rond en hadden geen vaste woonplaats: ze waren <strong>nomaden</strong>.</p>
+          <p class="tip">Ezelsbruggetje: nomaden zijn altijd <em>onderweg</em>.</p>` },
+        { kop: 'Begrippen op een rij', html: `
+          <table>
+            <tr><th>Begrip</th><th>Betekenis</th></tr>
+            <tr><td>Nomade</td><td>Iemand zonder vaste woonplaats</td></tr>
+            <tr><td>Prehistorie</td><td>De tijd voordat mensen konden schrijven</td></tr>
+          </table>
+          <p class="let-op">Let op: prehistorie ≠ oudheid.</p>` }
+      ],
+
+      // Kaartjes: [voorkant, achterkant]. HTML mag.
+      kaartjes: [
+        ['Nomade', 'Iemand zonder vaste woonplaats die rondtrekt.'],
+        ['Prehistorie', 'De tijd voordat mensen konden schrijven.']
+      ],
+
+      // Vragen voor Oefenen en Toets. Drie soorten, de engine herkent ze aan de velden:
+      vragen: [
+        // a) meerkeuze: opties + antwoord (0 = eerste optie) + uitleg
+        { vraag: 'Hoe noem je mensen zonder vaste woonplaats?', opties: ['Boeren', 'Nomaden', 'Burgers'], antwoord: 1,
+          uitleg: 'Nomaden trekken rond op zoek naar voedsel.' },
+        // b) typvraag: antwoord (+ eventueel ook = andere goede antwoorden). Accentfout = half goed.
+        { vraag: 'Hoe heet de tijd voordat mensen konden schrijven?', antwoord: 'prehistorie', ook: ['de prehistorie'],
+          uitleg: 'Pre = voor, historie = geschiedenis.' },
+        // c) open vraag: model = het goede antwoord; Thijs kijkt zichzelf na (goed / half / fout)
+        { vraag: 'Leg uit waarom jagers en verzamelaars rondtrokken.', model: 'Ze volgden de dieren en zochten planten die op andere plekken groeiden.' },
+        // toepassen: true = toepassingsvraag; dan verschijnt de keuze "Alleen toepassen"
+        { toepassen: true, vraag: 'Een groep trekt elk voorjaar met de rendieren mee. Wat voor groep is dit?',
+          opties: ['Nomaden', 'Boeren', 'Handelaren'], antwoord: 0, uitleg: 'Ze hebben geen vaste woonplaats.' }
+      ]
+    },
+    {
+      id: 'p2', titel: 'De eerste boeren', sub: 'Paragraaf 1.2',
+      uitleg: `<p>Je mag uitleg ook als één stuk HTML geven in plaats van blokken.</p>
+               <p>De eerste boeren gingen op één plek wonen: ze werden <span class="mark">landbouwers</span>.</p>`,
+      kaartjes: [['Landbouwsamenleving', 'Samenleving waarin de meeste mensen boer zijn.']],
+      vragen: [
+        { vraag: 'Wat deden de eerste boeren anders dan jagers?', opties: ['Ze bleven op één plek wonen', 'Ze trokken meer rond'], antwoord: 0, husselen: false,
+          uitleg: 'Akkers en vee vragen om een vaste woonplaats.' }
+      ]
+    }
+  ]
+});
+</script>
+</body>
+</html>

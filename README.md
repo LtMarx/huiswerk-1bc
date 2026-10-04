@@ -1,7 +1,7 @@
 # Huiswerk van Thijs
 
 Eén website met alle huiswerk-hulp-apps voor Thijs, gehost op GitHub Pages.
-Thijs heeft maar één link nodig: `https://<gebruikersnaam>.github.io/huiswerk-thijs/`
+Thijs heeft maar één link nodig: `https://ltmarx.github.io/huiswerk-thijs/`
 
 ## Hoe het werkt
 
@@ -16,6 +16,10 @@ frans/01-unite-1-bonjour/woordjes.html
 - `.github/workflows/deploy.yml` doet dit bij elke push naar `main` en publiceert `_site/` op GitHub Pages.
 
 Conventies voor mappen, `info.json` en apps staan in [CLAUDE.md](CLAUDE.md).
+
+### Leermodules: één standaard voor leren, oefenen en toetsen
+
+Alle leer-apps gebruiken de gedeelde engine en huisstijl in [`_leermodule/`](_leermodule/README.md). Een app bevat alleen nog de inhoud (uitleg, kaartjes, vragen of woordjes). Elke app krijgt dan dezelfde drie stappen: **Leren** (uitleg + kaartjes), **Oefenen** (fouten komen terug) en **Toetsen** (cijfer 1–10). Alles werkt op laptop, iPad en telefoon. Sjablonen staan in `_leermodule/sjablonen/`.
 
 ### info.json (optioneel, per vak- of blokmap)
 

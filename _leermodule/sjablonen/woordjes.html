@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 1. Titel en omschrijving: deze verschijnen in het menu van de site. -->
+<title>Sjabloon – woordjes</title>
+<meta name="description" content="Voorbeeld van een woordjes-app: woordenlijst, kaartjes, typen en toets">
+<!-- 2. Niet veranderen. -->
+<link rel="stylesheet" href="../../_leermodule/v1/leermodule.css">
+</head>
+<body>
+<div id="app"><noscript>Zet JavaScript aan om deze app te gebruiken.</noscript></div>
+<script src="../../_leermodule/v1/leermodule.js"></script>
+<script>
+/* 3. Alleen hieronder de inhoud invullen. Uitleg van alle velden: _leermodule/README.md */
+Leermodule.start({
+  id: 'engels-u1-woordjes',   // uniek, kleine letters: wordt de localStorage-sleutel
+  titel: 'Engels oefenen',
+  ondertitel: 'Woordjes uit unit 1',
+  taal: 'en',                 // fr, en, de, es of la: bepaalt lidwoorden, accentknoppen en uitspraak
+
+  onderdelen: [
+    // Woorden: [nederlands, vreemd]  of  [nederlands, vreemd, [andere goede NL-antwoorden], [andere goede vreemde antwoorden]]
+    // Komma's betekenen "allebei goed": 'groot, lang' accepteert 'groot' en 'lang'. Tussen haakjes = mag weg: 'français(e)'.
+    { id: 'a', titel: 'Words A', sub: 'Thema school', woorden: [
+      ['de school', 'the school'], ['het potlood', 'the pencil'], ['de leraar, de lerares', 'the teacher'],
+      ['huiswerk', 'homework', null, ['homework', 'home work']]
+    ]},
+    // richting: 'herkennen' = alleen vreemd → Nederlands (standaard: 'beide' kanten op)
+    { id: 'b', titel: 'Words B', sub: 'Alleen herkennen', richting: 'herkennen', woorden: [
+      ['gelukkig, blij', 'happy'], ['moe', 'tired']
+    ]}
+  ]
+});
+</script>
+</body>
+</html>

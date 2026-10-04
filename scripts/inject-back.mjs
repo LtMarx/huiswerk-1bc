@@ -47,7 +47,9 @@ function knop(relPad) {
       // Vanuit het overzicht geopend: gewoon terug in de geschiedenis (behoudt scrollpositie).
       var vanIndex=/[?&]from=index(&|$)/.test(location.search);
       var zelfdeSite=document.referrer&&document.referrer.indexOf(location.origin)===0;
-      if(vanIndex&&zelfdeSite&&history.length>1){e.preventDefault();history.back();}
+      // Apps die zelf geschiedenis-stappen maken (zoals de leermodule) geven via huiswerkTerugStappen() door hoeveel.
+      var stappen=typeof window.huiswerkTerugStappen==='function'?window.huiswerkTerugStappen():1;
+      if(vanIndex&&zelfdeSite&&history.length>stappen){e.preventDefault();history.go(-stappen);}
     });
     document.body.appendChild(host);
   }
@@ -64,6 +66,7 @@ function loop(map) {
     if (!/\.html?$/i.test(d.name)) continue;
     const rel = relative(uitvoer, p).split(sep).join('/');
     if (!rel.includes('/')) continue; // index.html en andere bestanden in de root
+    if (/^[_.]/.test(rel)) continue; // _leermodule (sjabloon, voorbeeld) hoort niet bij het menu
     let html = readFileSync(p, 'utf8');
     if (html.includes(MARKER)) continue;
     const i = html.search(/<\/body\s*>/i);
