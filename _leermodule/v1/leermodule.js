@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var VERSIE = '1.0.0';
+  var VERSIE = '1.1.0';
 
   /* ---------- Talen voor woordjes ---------- */
   var TALEN = {
@@ -107,6 +107,23 @@
     } catch (e) { /* geen spraak beschikbaar */ }
   }
 
+  /* ---------- Namen (alleen op dit apparaat; zelfde sleutels als index.html) ---------- */
+  var Profiel = {
+    lees: function (k, std) { try { var v = localStorage.getItem(k); return v == null ? std : JSON.parse(v); } catch (e) { return std; } },
+    schrijf: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* privévenster */ } },
+    naam: function () { return Profiel.lees('huiswerk:naam', ''); },
+    namen: function () { return Profiel.lees('huiswerk:namen', []); },
+    kies: function (n) {
+      n = String(n || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+      if (!n) return false;
+      var namen = Profiel.namen().filter(function (x) { return x.toLowerCase() !== n.toLowerCase(); });
+      namen.unshift(n);
+      Profiel.schrijf('huiswerk:namen', namen.slice(0, 12));
+      Profiel.schrijf('huiswerk:naam', n);
+      return true;
+    }
+  };
+
   /* ---------- De module ---------- */
   function start(cfg) {
     var app = document.getElementById('app');
@@ -118,7 +135,7 @@
       throw e;
     }
 
-    var KEY = cfg.id + '-v1';
+    var KEY_BASIS = cfg.id + '-v1', KEY = KEY_BASIS;
     var OND = cfg.onderdelen;
     var heeftWoorden = OND.some(function (o) { return o.woorden && o.woorden.length; });
     var NL = TALEN.nl;
@@ -128,9 +145,20 @@
     var heeftToepassen = OND.some(function (o) { return (o.vragen || []).some(function (v) { return v.toepassen; }); })
       && OND.some(function (o) { return (o.vragen || []).some(function (v) { return !v.toepassen; }); });
 
-    var store = { kies: OND.map(function (o) { return o.id; }), richting: 'boek', aantal: String((cfg.toets && cfg.toets.standaard) || 20), soort: 'alles', hist: [], fouten: [] };
-    try { var raw = localStorage.getItem(KEY); if (raw) store = Object.assign(store, JSON.parse(raw)); } catch (e) { /* privévenster */ }
-    store.kies = store.kies.filter(function (id) { return OND.some(function (o) { return o.id === id; }); });
+    // Voortgang wordt per naam bewaard: '<id>-v1@<naam>'. Alles blijft op dit apparaat.
+    var store, naam = Profiel.naam();
+    function laadStore() {
+      store = { kies: OND.map(function (o) { return o.id; }), richting: 'boek', aantal: String((cfg.toets && cfg.toets.standaard) || 20), soort: 'alles', hist: [], fouten: [] };
+      KEY = naam ? KEY_BASIS + '@' + naam.toLowerCase() : KEY_BASIS;
+      try {
+        var raw = localStorage.getItem(KEY);
+        // Voortgang van vóór de namen gaat één keer over naar de eerste naam die deze app opent.
+        if (!raw && naam && (raw = localStorage.getItem(KEY_BASIS))) { localStorage.setItem(KEY, raw); localStorage.removeItem(KEY_BASIS); }
+        if (raw) store = Object.assign(store, JSON.parse(raw));
+      } catch (e) { /* privévenster */ }
+      store.kies = store.kies.filter(function (id) { return OND.some(function (o) { return o.id === id; }); });
+    }
+    laadStore();
     function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* vol of geblokkeerd */ } }
 
     var scherm = 'start', run = null;
@@ -234,7 +262,9 @@
 
     function schermStart() {
       var pool = vraagPool(), kaarten = kaartjes(), niets = !store.kies.length;
-      var html = '<header class="lm-kop"><h1>' + esc(cfg.titel) + '</h1>' + (cfg.ondertitel ? '<p>' + esc(cfg.ondertitel) + '</p>' : '') + '</header>';
+      var html = '<header class="lm-kop"><div class="lm-kop-rij"><h1>' + esc(cfg.titel) + '</h1>' +
+        '<button class="lm-profiel" data-act="wie" title="Iemand anders? Wissel van naam">👤 ' + esc(naam) + '</button></div>' +
+        (cfg.ondertitel ? '<p>' + esc(cfg.ondertitel) + '</p>' : '') + '</header>';
 
       if (store.fouten.length) {
         html += '<div class="lm-banner"><span>Je had ' + meervoud(store.fouten.length, 'fout', 'fouten') + ' in je vorige toets.</span>' +
@@ -488,8 +518,30 @@
     }
 
     /* ----- Verloop ----- */
+    function schermWie() {
+      var namen = Profiel.namen();
+      return '<header class="lm-kop"><h1>' + esc(cfg.titel) + '</h1></header>' +
+        '<section class="lm-wie"><h2>👋 Wie ben jij?</h2>' +
+        (namen.length ? '<p>Tik op je naam:</p><div class="lm-namen">' + namen.map(function (n) {
+          return '<button class="lm-btn ghost" data-act="naam" data-v="' + esc(n) + '">' + (n === naam ? '✓ ' : '') + esc(n) + '</button>';
+        }).join('') + '</div><p>Of typ een nieuwe naam:</p>' : '<p>Typ je voornaam. Dan worden jouw oefeningen en cijfers apart bewaard.</p>') +
+        '<form class="lm-naamform" data-act-form="naam"><input id="lm-naam" class="lm-ans" maxlength="20" autocomplete="given-name" placeholder="Je voornaam" aria-label="Je voornaam">' +
+        '<button class="lm-btn" type="submit">Start</button></form>' +
+        '<p class="lm-note">🔒 Je naam en je resultaten blijven alleen op dit apparaat. Niemand anders kan ze zien.</p>' +
+        (naam ? '<div class="lm-row"><button class="lm-btn ghost" data-act="naarstart">Terug</button></div>' : '') + '</section>';
+    }
+    function kiesNaam(n) {
+      if (!Profiel.kies(n)) return;
+      naam = Profiel.naam(); laadStore(); run = null; scherm = 'start'; render(); window.scrollTo(0, 0);
+    }
+    app.addEventListener('submit', function (e) {
+      if (!e.target.matches('[data-act-form="naam"]')) return;
+      e.preventDefault(); kiesNaam(document.getElementById('lm-naam').value);
+    });
+
     function render() {
       if (scherm !== 'start') app.classList.remove('lm-breed');
+      if (!naam || scherm === 'wie') { app.classList.remove('lm-breed'); app.innerHTML = schermWie(); var ni = document.getElementById('lm-naam'); if (ni && !aanraak() && !Profiel.namen().length) ni.focus(); return; }
       app.innerHTML = scherm === 'start' ? schermStart() : scherm === 'leren' ? schermLeren()
         : scherm === 'kaartjes' ? schermKaartjes() : scherm === 'vraag' ? schermVraag()
           : scherm === 'klaar' ? schermKlaar() : schermUitslag();
@@ -516,6 +568,7 @@
     }
     function naarStart() {
       run = null;
+      if (scherm === 'wie') { scherm = 'start'; render(); return; }
       if (location.hash && history.state && history.state.lm) history.back(); // popstate tekent het startscherm
       else ga('start');
     }
@@ -617,6 +670,8 @@
       var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
       var a = b.dataset.act, v = b.dataset.v;
       if (a === 'say') { e.stopPropagation(); spreek(b.dataset.t, DOEL.code); return; }
+      if (a === 'wie') { scherm = 'wie'; render(); window.scrollTo(0, 0); return; }
+      if (a === 'naam') { kiesNaam(v); return; }
       if (a === 'sec') {
         var id = b.dataset.id;
         store.kies = store.kies.indexOf(id) >= 0 ? store.kies.filter(function (x) { return x !== id; }) : store.kies.concat(id);
@@ -712,5 +767,5 @@
     if (cfg.taal && typeof cfg.taal === 'string' && !TALEN[cfg.taal]) throw new Error('onbekende taal "' + cfg.taal + '". Kies uit: ' + Object.keys(TALEN).join(', ') + '.');
   }
 
-  window.Leermodule = { versie: VERSIE, start: start, TALEN: TALEN, _test: { norm: norm, variants: variants, controleer: controleer } };
+  window.Leermodule = { versie: VERSIE, start: start, TALEN: TALEN, Profiel: Profiel, _test: { norm: norm, variants: variants, controleer: controleer } };
 })();

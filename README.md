@@ -28,7 +28,19 @@ Alle leer-apps gebruiken de gedeelde engine en huisstijl in [`_leermodule/`](_le
 ```
 
 - `toetsdatum` (JJJJ-MM-DD) → verschijnt bij "Komende toetsen" met het aantal dagen.
-- `archief: true` → blok staat ingeklapt onder "Eerdere blokken".
+- **Archief per vak, automatisch:** een blok gaat naar "📦 Archief" in zijn vak
+  - de dag na de `toetsdatum`, of
+  - als er geen toetsdatum is: een maand nadat het blok is aangemaakt (eerste commit in die map).
+- `archief: true` → blok staat altijd in het archief. `archief: false` → blok wordt nooit automatisch gearchiveerd.
+- De datumberekening gebeurt in de browser van de bezoeker, dus het archief klopt elke dag zonder nieuwe deploy.
+
+### Wordt de site vanzelf bijgewerkt?
+
+Ja. Elke push naar `main` start de Action, die het menu opnieuw opbouwt en publiceert (± een minuut). Je hoeft niets handmatig te doen. Archiveren, "Komende toetsen", het aantal dagen en de badge "Nieuw" worden in de browser berekend op de datum van vandaag.
+
+### Namen (klasgenoten)
+
+Bij het eerste bezoek vraagt de site "Wie ben jij?". Oefeningen, toetscijfers en fouten worden per naam bewaard, alleen in de browser van dat apparaat (localStorage). Er zijn geen accounts, geen wachtwoorden en geen server. Er gaat ook niets naar internet of naar de repo. Via de knop 👤 rechtsboven wissel je van naam, bijvoorbeeld op een gedeelde iPad. Een naam is geen beveiliging: wie op hetzelfde apparaat een andere naam aantikt, ziet die resultaten.
 
 ## GitHub Pages aanzetten (eenmalig)
 

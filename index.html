@@ -137,6 +137,24 @@
     background: var(--accent); color: #fff; cursor: pointer; margin-top: 12px;
   }
   @media (prefers-color-scheme: dark) { button { color: #0f172a; } }
+  .wie { background: var(--kaart); border-radius: var(--radius); box-shadow: var(--schaduw); padding: 22px 18px; max-width: 520px; }
+  .wie h2 { margin-top: 0; }
+  .wie form { display: flex; flex-wrap: wrap; gap: 10px; }
+  .wie input {
+    flex: 1 1 200px; min-height: 52px; padding: 0 16px; font: inherit; font-size: 20px;
+    border: 2px solid var(--rand); border-radius: 14px; background: var(--bg); color: var(--tekst);
+  }
+  .wie input:focus { outline: none; border-color: var(--accent); }
+  .wie form button { margin-top: 0; min-height: 52px; }
+  .wie .klein { color: var(--zacht); font-size: 14px; margin: 14px 0 0; }
+  .namen { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+  .namen button { margin-top: 0; background: var(--accent-zacht); color: var(--tekst); }
+  .profiel {
+    margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px;
+    border-radius: 999px; background: var(--kaart); box-shadow: var(--schaduw); text-decoration: none; font-size: 15px; font-weight: 600;
+    max-width: 45vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .groet { margin: -4px 0 4px; color: var(--zacht); }
   footer { margin-top: 40px; text-align: center; font-size: 13px; color: var(--zacht); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -200,6 +218,34 @@
 
   function heeftNieuw(blok) { return blok.apps.some(isNieuw); }
 
+  // Archief: "archief": true/false in info.json wint. Anders automatisch:
+  // de dag na de toetsdatum, of (zonder toetsdatum) een maand nadat het blok is aangemaakt.
+  function isArchief(blok) {
+    if (blok.archief === true || blok.archief === false) return blok.archief;
+    if (blok.toetsdatum) return dagenTot(blok.toetsdatum) < 0;
+    var t = new Date(blok.aangemaakt);
+    if (isNaN(t)) return false;
+    var grens = new Date(t.getFullYear(), t.getMonth() + 1, t.getDate());
+    return vandaag() > grens;
+  }
+  function vakArchief(vak) { return vak.archief === true; }
+
+  /* ---------- Namen (alleen op dit apparaat; zelfde sleutels als _leermodule/v1/leermodule.js) ---------- */
+  var NAAM_KEY = 'huiswerk:naam', NAMEN_KEY = 'huiswerk:namen';
+  function lees(k, std) { try { var v = localStorage.getItem(k); return v == null ? std : JSON.parse(v); } catch (e) { return std; } }
+  function schrijf(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* privévenster */ } }
+  function huidigeNaam() { return lees(NAAM_KEY, ''); }
+  function alleNamen() { return lees(NAMEN_KEY, []); }
+  function kiesNaam(naam) {
+    naam = String(naam || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+    if (!naam) return false;
+    var namen = alleNamen().filter(function (n) { return n.toLowerCase() !== naam.toLowerCase(); });
+    namen.unshift(naam);
+    schrijf(NAMEN_KEY, namen.slice(0, 12));
+    schrijf(NAAM_KEY, naam);
+    return true;
+  }
+
   function toetsTekst(blok) {
     var n = dagenTot(blok.toetsdatum);
     if (n === null || n < 0) return '';
@@ -232,12 +278,12 @@
   function komendeToetsen() {
     var lijst = [];
     manifest.vakken.forEach(function (vak) {
-      if (vak.archief) return;
+      if (vakArchief(vak)) return;
       if (vak.toetsdatum && dagenTot(vak.toetsdatum) >= 0) {
         lijst.push({ vak: vak, naam: vak.naam, datum: vak.toetsdatum, href: '#' + vak.id });
       }
       vak.blokken.forEach(function (blok) {
-        if (blok.archief || !blok.toetsdatum || dagenTot(blok.toetsdatum) < 0) return;
+        if (isArchief(blok) || !blok.toetsdatum || dagenTot(blok.toetsdatum) < 0) return;
         lijst.push({ vak: vak, naam: blok.naam, datum: blok.toetsdatum, href: '#' + vak.id + '/' + blok.id });
       });
     });
@@ -255,22 +301,48 @@
   }
 
   function vakTegel(vak) {
-    var actief = vak.blokken.filter(function (b) { return !b.archief; });
-    var apps = vak.blokken.reduce(function (n, b) { return n + b.apps.length; }, 0);
-    var nieuw = vak.blokken.some(heeftNieuw);
+    var actief = vak.blokken.filter(function (b) { return !isArchief(b); });
+    var apps = actief.reduce(function (n, b) { return n + b.apps.length; }, 0);
+    var inArchief = vak.blokken.length - actief.length;
+    var nieuw = actief.some(heeftNieuw);
     return '<a class="tegel" style="--tint:' + tint(vak.id) + '" href="#' + esc(vak.id) + '">' +
       (nieuw ? '<span class="badge">Nieuw</span>' : '') +
       '<span class="emoji" aria-hidden="true">' + esc(vak.emoji) + '</span>' +
       '<span class="naam">' + esc(vak.naam) + '</span>' +
-      '<span class="info">' + (actief.length ? aantal(apps, 'app', 'apps') : 'Geen actieve blokken') + '</span></a>';
+      '<span class="info">' + (actief.length ? aantal(apps, 'app', 'apps') : 'Nu geen blokken') +
+      (inArchief ? '<br>📦 ' + inArchief + ' in archief' : '') + '</span></a>';
+  }
+
+  function profielKnop() {
+    var naam = huidigeNaam();
+    return naam ? '<a class="profiel" href="#wie" title="Iemand anders? Wissel van naam">👤 ' + esc(naam) + '</a>' : '';
+  }
+
+  function toonWie() {
+    document.title = 'Wie ben jij? · Huiswerk van Thijs';
+    var naam = huidigeNaam(), namen = alleNamen();
+    zetKop('📚 Huiswerk van Thijs', naam ? '#' : null);
+    inhoud.innerHTML = '<section class="wie"><h2>👋 Wie ben jij?</h2>' +
+      (namen.length ? '<p style="margin:0 0 8px">Tik op je naam:</p><div class="namen">' + namen.map(function (n) {
+        return '<button type="button" data-naam="' + esc(n) + '">' + (n === naam ? '✓ ' : '') + esc(n) + '</button>';
+      }).join('') + '</div><p style="margin:0 0 8px">Of typ een nieuwe naam:</p>' : '<p style="margin:0 0 12px">Typ je voornaam. Dan worden jouw oefeningen en cijfers apart bewaard.</p>') +
+      '<form id="naamform"><input id="naam" name="naam" maxlength="20" autocomplete="given-name" placeholder="Je voornaam" aria-label="Je voornaam">' +
+      '<button type="submit">Start</button></form>' +
+      '<p class="klein">🔒 Je naam en je resultaten blijven alleen op dit apparaat. Niemand anders kan ze zien, en ze gaan niet naar internet.</p></section>';
+    var gekozen = function (n) { if (kiesNaam(n)) { if (location.hash) location.hash = ''; else route(); } };
+    document.getElementById('naamform').onsubmit = function (e) { e.preventDefault(); gekozen(document.getElementById('naam').value); };
+    inhoud.querySelectorAll('[data-naam]').forEach(function (b) { b.onclick = function () { gekozen(b.dataset.naam); }; });
+    if (!namen.length && !matchMedia('(hover: none)').matches) document.getElementById('naam').focus();
   }
 
   function toonHome() {
+    if (!huidigeNaam()) return toonWie();
     document.title = 'Huiswerk van Thijs';
     zetKop('📚 Huiswerk van Thijs');
-    var actief = manifest.vakken.filter(function (v) { return !v.archief; });
-    var archief = manifest.vakken.filter(function (v) { return v.archief; });
-    var html = komendeToetsen();
+    kop.insertAdjacentHTML('beforeend', profielKnop());
+    var actief = manifest.vakken.filter(function (v) { return !vakArchief(v); });
+    var archief = manifest.vakken.filter(vakArchief);
+    var html = '<p class="groet">Hoi ' + esc(huidigeNaam()) + '! Wat ga je vandaag doen?</p>' + komendeToetsen();
     html += '<h2>Kies een vak</h2>';
     html += actief.length
       ? '<div class="tegels">' + actief.map(vakTegel).join('') + '</div>'
@@ -285,10 +357,11 @@
   function blokRij(vak, blok) {
     var sub = [aantal(blok.apps.length, 'app', 'apps')];
     var toets = toetsTekst(blok);
+    if (isArchief(blok) && blok.toetsdatum && dagenTot(blok.toetsdatum) < 0) sub.push('toets was ' + mooieDatum(blok.toetsdatum));
     return '<a class="rij" href="#' + esc(vak.id + '/' + blok.id) + '">' +
       '<span class="icoon" aria-hidden="true">' + esc(blok.emoji || '📘') + '</span>' +
       '<span class="tekst"><span class="titel">' + esc(blok.naam) +
-      (heeftNieuw(blok) ? ' <span class="badge">Nieuw</span>' : '') +
+      (heeftNieuw(blok) && !isArchief(blok) ? ' <span class="badge">Nieuw</span>' : '') +
       (toets ? ' <span class="label">' + esc(toets) + '</span>' : '') + '</span>' +
       '<span class="sub">' + sub.join(' · ') + '</span></span>' +
       '<span class="pijl" aria-hidden="true">›</span></a>';
@@ -297,13 +370,13 @@
   function toonVak(vak) {
     document.title = vak.naam + ' · Huiswerk van Thijs';
     zetKop(esc(vak.emoji) + ' ' + esc(vak.naam), '#', '<a href="#">Overzicht</a>');
-    var actief = vak.blokken.filter(function (b) { return !b.archief; });
-    var archief = vak.blokken.filter(function (b) { return b.archief; });
+    var actief = vak.blokken.filter(function (b) { return !isArchief(b); });
+    var archief = vak.blokken.filter(isArchief).reverse(); // nieuwste eerst
     var html = actief.length
       ? '<div class="lijst">' + actief.map(function (b) { return blokRij(vak, b); }).join('') + '</div>'
-      : '<p class="leeg">Op dit moment geen blokken. Kijk bij eerdere blokken.</p>';
+      : '<p class="leeg">Op dit moment geen blokken. Oude blokken staan in het archief hieronder.</p>';
     if (archief.length) {
-      html += '<details class="archief"' + (actief.length ? '' : ' open') + '><summary>Eerdere blokken (' + archief.length + ')</summary>' +
+      html += '<details class="archief"' + (actief.length ? '' : ' open') + '><summary>📦 Archief: eerdere blokken (' + archief.length + ')</summary>' +
         '<div class="lijst">' + archief.map(function (b) { return blokRij(vak, b); }).join('') + '</div></details>';
     }
     inhoud.innerHTML = html;
@@ -344,6 +417,7 @@
     if (!manifest) return;
     var delen = decodeURIComponent(location.hash.replace(/^#\/?/, '')).split('/').filter(Boolean);
     if (!delen.length) toonHome();
+    else if (delen[0] === 'wie') toonWie();
     else {
       var vak = vindVak(delen[0]);
       if (!vak) toonNietGevonden();

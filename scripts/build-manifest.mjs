@@ -129,17 +129,33 @@ function bouwApp(map, naam) {
   };
 }
 
+// true = altijd archief, false = nooit automatisch archiveren, null = automatisch (index.html beslist op datum).
+function archiefWaarde(info) {
+  return info.archief === true ? true : info.archief === false ? false : null;
+}
+
+// Eerste commit waarin iets in deze map stond; anders de oudste app- of bestandsdatum.
+function aangemaakt(map, apps) {
+  const eerste = git('log', '--diff-filter=A', '--format=%cI', '--', pad(map)).split('\n').filter(Boolean).pop();
+  if (eerste) return eerste;
+  const datums = apps.map((a) => a.toegevoegd);
+  if (existsSync(join(map, 'info.json'))) datums.push(statSync(join(map, 'info.json')).mtime.toISOString());
+  return datums.sort()[0] || statSync(map).mtime.toISOString();
+}
+
 function bouwBlok(vakMap, naam) {
   const map = join(vakMap, naam);
   const info = leesInfo(map);
+  const apps = htmlBestanden(map).map((f) => bouwApp(map, f));
   return {
     id: naam,
     pad: pad(map),
     naam: info.naam || weergavenaam(naam),
     emoji: info.emoji || '',
     toetsdatum: info.toetsdatum || null,
-    archief: info.archief === true,
-    apps: htmlBestanden(map).map((f) => bouwApp(map, f)),
+    archief: archiefWaarde(info),
+    aangemaakt: aangemaakt(map, apps),
+    apps,
   };
 }
 

@@ -59,6 +59,17 @@ h1,h2,h3{font-family:var(--f-kop);line-height:1.15;margin:0}
 .lm-kop h1{font-weight:800;font-size:clamp(2rem,6vw,2.8rem);line-height:1.05;color:var(--ink)}
 .lm-kop p{margin:6px 0 0;color:var(--muted)}
 .lm-kop{margin-bottom:22px}
+.lm-kop-rij{display:flex;align-items:flex-start;gap:12px}
+.lm-kop-rij h1{flex:1;min-width:0}
+.lm-profiel{flex:none;margin-top:4px;display:inline-flex;align-items:center;gap:6px;min-height:44px;max-width:45vw;padding:0 14px;border-radius:999px;
+  border:1px solid var(--edge);background:var(--card);color:var(--text);font-weight:700;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lm-wie{max-width:520px;padding:20px 18px;background:var(--card);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow)}
+.lm-wie h2{font-size:1.4rem;margin-bottom:8px}
+.lm-wie p{margin:8px 0}
+.lm-namen{display:flex;flex-wrap:wrap;gap:8px}
+.lm-naamform{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.lm-naamform .lm-ans{flex:1 1 200px;margin-top:0}
+.lm-naamform .lm-btn{flex:0 0 auto;min-width:110px}
 h2.lm-h2{font-weight:700;font-size:1.25rem;margin:28px 0 10px}
 .lm-note{color:var(--muted);font-size:.92rem;margin:8px 0 0}
 

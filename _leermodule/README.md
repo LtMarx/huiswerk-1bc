@@ -24,6 +24,13 @@ De map begint met `_`, dus hij verschijnt niet in het menu. De sjablonen zijn we
   2. **Oefenen**: vragen met directe feedback en uitleg. Fouten komen een paar vragen later terug, tot alles goed is.
   3. **Toetsen**: zonder hulp, met een cijfer van 1 tot 10 (rood omcirkeld), alle antwoorden nagekeken, en de knop "Oefen mijn fouten". De laatste cijfers en de fouten van de vorige toets worden onthouden.
 
+**Namen**
+- Wie de site of een app voor het eerst opent, typt een voornaam (of tikt een eerder gebruikte naam aan).
+- Voortgang, cijfers en fouten worden per naam bewaard onder `'<id>-v1@<naam>'`, alleen op dat apparaat.
+- Met de knop 👤 rechtsboven wissel je van naam.
+- De naam deelt de app met het menu via `huiswerk:naam` en `huiswerk:namen`; in code via `Leermodule.Profiel.naam()`, `.namen()` en `.kies(naam)`.
+- Voortgang van vóór v1.1 (sleutel zonder naam) gaat één keer over naar de eerste naam die de app opent.
+
 **Laptop en mobiel**
 - Op een laptop staan "kiezen" en de drie stappen naast elkaar. Op iPad en telefoon staan ze onder elkaar.
 - Alle knoppen zijn minstens 44px hoog. Er is ruimte onderaan voor de terugknop van de site.
@@ -47,7 +54,7 @@ De map begint met `_`, dus hij verschijnt niet in het menu. De sjablonen zijn we
 
 ```js
 Leermodule.start({
-  id: 'gs-h1-prehistorie',        // VERPLICHT. Kleine letters/cijfers/streepjes. localStorage-sleutel wordt '<id>-v1'.
+  id: 'gs-h1-prehistorie',        // VERPLICHT. Kleine letters/cijfers/streepjes. localStorage-sleutel wordt '<id>-v1@<naam>'.
   titel: 'Geschiedenis oefenen',  // VERPLICHT. Grote kop.
   ondertitel: 'Hoofdstuk 1',      // optioneel
   taal: 'fr',                     // alleen bij woordjes: fr | en | de | es | la (of een eigen taal-object, zie onder)

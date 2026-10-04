@@ -13,7 +13,12 @@ engels/02-unit-2/irregular-verbs.html
 
 - Numeriek voorvoegsel (`01-`, `02-`) bepaalt de volgorde en wordt niet getoond.
 - Weergavenaam = mapnaam zonder voorvoegsel, streepjes → spaties, eerste letter hoofdletter (`unite-1-bonjour` → "Unite 1 bonjour"), tenzij `info.json` een `naam` geeft.
-- `info.json` (optioneel) in vak- of blokmap: `{"naam": "Frans", "emoji": "🇫🇷", "archief": false, "toetsdatum": "2026-10-14"}`. Datum altijd `JJJJ-MM-DD`.
+- `info.json` (optioneel) in vak- of blokmap: `{"naam": "Frans", "emoji": "🇫🇷", "toetsdatum": "2026-10-14"}`. Datum altijd `JJJJ-MM-DD`.
+- **Archief gaat automatisch** (in de browser, op de datum van vandaag): een blok verhuist naar "📦 Archief" in zijn vak
+  - de dag na `toetsdatum`, of
+  - zonder toetsdatum: een maand na de eerste commit in de blokmap.
+  - `"archief": true` = altijd archief (bijv. als de toets al geweest is maar de datum onbekend is). `"archief": false` = nooit automatisch.
+- Elke push naar `main` publiceert de site opnieuw; er is geen handmatige stap.
 - Mappen/bestanden die met `_` of `.` beginnen worden overgeslagen, net als `scripts/`, `.github/`, `assets/`.
 - Raak `index.html`, `scripts/` en `.github/` niet aan bij het toevoegen van een app.
 - `manifest.json` en `_site/` worden gegenereerd en staan in `.gitignore`; nooit committen.
@@ -33,7 +38,7 @@ engels/02-unit-2/irregular-verbs.html
 - Eén HTML-bestand per app, alleen relatieve paden. De enige toegestane lokale verwijzing is `../../_leermodule/v1/…` (CSS en JS van de leermodule).
 - Externe scripts alleen via `cdnjs.cloudflare.com` of `cdn.jsdelivr.net`; lettertypen via Google Fonts (de leermodule laadt ze al).
 - Elke app heeft een `<title>` (wordt de titel in het menu) en een `<meta name="description" content="...">` (korte omschrijving in het menu).
-- **localStorage-sleutels altijd met een prefix per app.** Bij de leermodule gaat dat vanzelf: `id: 'frans-u2-woordjes'` → sleutel `frans-u2-woordjes-v1`. Patroon voor `id`: `<vak>-<blok-afkorting>-<app>`. Nooit een `id` hergebruiken of later veranderen.
+- **localStorage-sleutels altijd met een prefix per app en per naam.** De site vraagt bezoekers hun voornaam (`huiswerk:naam`, lijst in `huiswerk:namen`; alleen op het apparaat) zodat klasgenoten de site ook kunnen gebruiken. De leermodule regelt dit vanzelf: `id: 'frans-u2-woordjes'` → sleutel `frans-u2-woordjes-v1@<naam>`. Patroon voor `id`: `<vak>-<blok-afkorting>-<app>`. Nooit een `id` hergebruiken of later veranderen. Een zelfstandige app gebruikt `Leermodule.Profiel.naam()` (of leest `huiswerk:naam`) en zet de naam in zijn eigen sleutels.
 - Geen eigen "terug naar overzicht"-knop: de Action voegt die bij het publiceren toe (vast linksonder). De leermodule houdt daar al ruimte voor vrij.
 - Werkt op laptop én mobiel/iPad: responsive, touch targets ≥ 44px, invoervelden ≥ 16px tekst (anders zoomt iOS in), licht/donker via `prefers-color-scheme`.
 - **Geen persoonsgegevens** in de repo (achternaam, school, klas, adres, foto's, cijfers): de repo is publiek.
