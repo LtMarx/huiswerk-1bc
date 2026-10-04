@@ -165,7 +165,7 @@ details.lm-instel .in{padding:0 14px 16px}
 .lm-warn{padding:12px 14px;border-radius:12px;background:var(--warnbg);color:var(--warn);font-weight:600}
 
 /* ---------- Oefenen, kaartjes en toets ---------- */
-.lm-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;margin:0 -4px 14px;padding:10px 4px;background:var(--bg)}
+.lm-top{display:flex;align-items:center;gap:12px;margin:0 -4px 14px;padding:10px 4px;background:var(--bg)}
 .lm-x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 .lm-segs{flex:1;display:flex;gap:3px;min-width:0}
 .lm-segs i{flex:1;height:8px;border-radius:99px;background:var(--line)}
