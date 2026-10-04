@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Alle huiswerk-apps van Thijs op één plek">
+<title>Huiswerk van Thijs</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --kaart: #ffffff;
+    --tekst: #1e293b;
+    --zacht: #64748b;
+    --rand: #e2e8f0;
+    --accent: #2563eb;
+    --accent-zacht: #dbeafe;
+    --nieuw: #16a34a;
+    --waarschuw: #ea580c;
+    --schaduw: 0 1px 3px rgba(15, 23, 42, .08), 0 4px 14px rgba(15, 23, 42, .06);
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --kaart: #1e293b;
+      --tekst: #f1f5f9;
+      --zacht: #94a3b8;
+      --rand: #334155;
+      --accent: #60a5fa;
+      --accent-zacht: #1e3a5f;
+      --nieuw: #4ade80;
+      --waarschuw: #fb923c;
+      --schaduw: 0 1px 3px rgba(0, 0, 0, .4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--tekst);
+    font: 17px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left));
+  }
+  header { display: flex; align-items: center; gap: 12px; min-height: 52px; margin-bottom: 8px; }
+  header h1 { font-size: clamp(22px, 5vw, 30px); margin: 0; line-height: 1.15; }
+  .terug {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--kaart); color: var(--tekst); text-decoration: none; font-size: 22px;
+    box-shadow: var(--schaduw);
+  }
+  .kruimels { font-size: 15px; color: var(--zacht); margin: 0 0 16px; }
+  .kruimels a { color: var(--accent); text-decoration: none; display: inline-block; padding: 10px 0; }
+  h2 { font-size: 19px; margin: 28px 0 12px; }
+  a { color: inherit; }
+  a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* Komende toetsen */
+  .toetsen { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .toets {
+    display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 12px 16px;
+    background: var(--kaart); border-radius: var(--radius); box-shadow: var(--schaduw); text-decoration: none;
+    border-left: 6px solid var(--accent);
+  }
+  .toets.binnenkort { border-left-color: var(--waarschuw); }
+  .toets .dagen { flex: none; min-width: 58px; text-align: center; font-weight: 800; font-size: 26px; line-height: 1; }
+  .toets .dagen small { display: block; font-size: 12px; font-weight: 600; color: var(--zacht); margin-top: 3px; }
+  .toets.binnenkort .dagen { color: var(--waarschuw); }
+  .toets .wat { min-width: 0; }
+  .toets .wat strong { display: block; }
+  .toets .wat span { color: var(--zacht); font-size: 14px; }
+
+  /* Vak-tegels */
+  .tegels { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .tegel {
+    position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    min-height: 140px; padding: 18px 12px; text-align: center; text-decoration: none;
+    border-radius: 22px; background: var(--kaart); box-shadow: var(--schaduw);
+    border-bottom: 6px solid hsl(var(--tint) 70% 55%);
+    transition: transform .12s ease;
+  }
+  .tegel:active { transform: scale(.97); }
+  .tegel .emoji { font-size: 48px; line-height: 1; }
+  .tegel .naam { font-weight: 700; font-size: 18px; }
+  .tegel .info { font-size: 13px; color: var(--zacht); }
+  .tegel .badge { position: absolute; top: 10px; right: 10px; }
+
+  /* Lijsten van blokken en apps */
+  .lijst { display: grid; gap: 10px; }
+  .rij {
+    display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 12px 16px;
+    background: var(--kaart); border-radius: var(--radius); box-shadow: var(--schaduw); text-decoration: none;
+  }
+  .rij:active { transform: scale(.99); }
+  .rij .icoon { flex: none; font-size: 28px; width: 36px; text-align: center; }
+  .rij .tekst { flex: 1; min-width: 0; }
+  .rij .titel { font-weight: 700; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .rij .sub { color: var(--zacht); font-size: 14px; margin-top: 2px; }
+  .rij .pijl { flex: none; color: var(--zacht); font-size: 22px; }
+  .badge {
+    display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    background: var(--nieuw); color: #fff; letter-spacing: .02em;
+  }
+  @media (prefers-color-scheme: dark) { .badge { color: #052e16; } }
+  .label {
+    display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    background: var(--accent-zacht); color: var(--tekst);
+  }
+
+  details.archief { margin-top: 28px; }
+  details.archief summary {
+    display: flex; align-items: center; gap: 8px; min-height: 48px; cursor: pointer;
+    font-weight: 700; color: var(--zacht); list-style: none;
+  }
+  details.archief summary::-webkit-details-marker { display: none; }
+  details.archief summary::before { content: "▸"; transition: transform .15s; }
+  details.archief[open] summary::before { transform: rotate(90deg); }
+  details.archief .lijst, details.archief .tegels { opacity: .85; }
+
+  .leeg, .fout {
+    background: var(--kaart); border-radius: var(--radius); box-shadow: var(--schaduw);
+    padding: 24px; text-align: center; color: var(--zacht);
+  }
+  .fout { color: var(--tekst); }
+  .fout .groot { font-size: 48px; }
+  .fout code { background: var(--bg); padding: 2px 6px; border-radius: 6px; font-size: 14px; }
+  button {
+    font: inherit; font-weight: 700; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+    background: var(--accent); color: #fff; cursor: pointer; margin-top: 12px;
+  }
+  @media (prefers-color-scheme: dark) { button { color: #0f172a; } }
+  footer { margin-top: 40px; text-align: center; font-size: 13px; color: var(--zacht); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header id="kop"><h1>📚 Huiswerk van Thijs</h1></header>
+  <main id="inhoud" aria-live="polite"><p class="leeg">Even laden…</p></main>
+  <footer id="voet"></footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var DAG = 86400000;
+  var NIEUW_DAGEN = 7;
+  var manifest = null;
+  var kop = document.getElementById('kop');
+  var inhoud = document.getElementById('inhoud');
+  var voet = document.getElementById('voet');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function vandaag() {
+    var d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function parseDatum(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+
+  function dagenTot(s) {
+    var d = parseDatum(s);
+    return d ? Math.round((d - vandaag()) / DAG) : null;
+  }
+
+  function mooieDatum(s) {
+    var d = parseDatum(s);
+    return d ? d.toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' }) : '';
+  }
+
+  function isNieuw(app) {
+    var t = Date.parse(app.toegevoegd || app.laatstGewijzigd);
+    return !isNaN(t) && Date.now() - t < NIEUW_DAGEN * DAG;
+  }
+
+  function tint(tekst) {
+    var h = 0;
+    for (var i = 0; i < tekst.length; i++) h = (h * 31 + tekst.charCodeAt(i)) % 360;
+    return h;
+  }
+
+  function aantal(n, een, meer) { return n + ' ' + (n === 1 ? een : meer); }
+
+  function heeftNieuw(blok) { return blok.apps.some(isNieuw); }
+
+  function toetsTekst(blok) {
+    var n = dagenTot(blok.toetsdatum);
+    if (n === null || n < 0) return '';
+    if (n === 0) return 'Toets vandaag!';
+    if (n === 1) return 'Toets morgen';
+    return 'Toets ' + mooieDatum(blok.toetsdatum);
+  }
+
+  function zetKop(titel, terugHref, kruimels) {
+    kop.innerHTML =
+      (terugHref ? '<a class="terug" href="' + esc(terugHref) + '" aria-label="Terug">←</a>' : '') +
+      '<h1>' + titel + '</h1>';
+    var oud = document.querySelector('.kruimels');
+    if (oud) oud.remove();
+    if (kruimels) {
+      var nav = document.createElement('nav');
+      nav.className = 'kruimels';
+      nav.setAttribute('aria-label', 'Kruimelpad');
+      nav.innerHTML = kruimels;
+      kop.after(nav);
+    }
+  }
+
+  function vindVak(id) {
+    return manifest.vakken.filter(function (v) { return v.id === id; })[0];
+  }
+
+  /* ---------- Weergaven ---------- */
+
+  function komendeToetsen() {
+    var lijst = [];
+    manifest.vakken.forEach(function (vak) {
+      if (vak.archief) return;
+      if (vak.toetsdatum && dagenTot(vak.toetsdatum) >= 0) {
+        lijst.push({ vak: vak, naam: vak.naam, datum: vak.toetsdatum, href: '#' + vak.id });
+      }
+      vak.blokken.forEach(function (blok) {
+        if (blok.archief || !blok.toetsdatum || dagenTot(blok.toetsdatum) < 0) return;
+        lijst.push({ vak: vak, naam: blok.naam, datum: blok.toetsdatum, href: '#' + vak.id + '/' + blok.id });
+      });
+    });
+    lijst.sort(function (a, b) { return a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : 0; });
+    if (!lijst.length) return '';
+    return '<h2>⏰ Komende toetsen</h2><div class="toetsen">' + lijst.map(function (t) {
+      var n = dagenTot(t.datum);
+      var groot = n === 0 ? '!' : n;
+      var klein = n === 0 ? 'vandaag' : n === 1 ? 'dag' : 'dagen';
+      return '<a class="toets' + (n <= 3 ? ' binnenkort' : '') + '" href="' + esc(t.href) + '">' +
+        '<div class="dagen">' + groot + '<small>' + klein + '</small></div>' +
+        '<div class="wat"><strong>' + esc(t.vak.emoji) + ' ' + esc(t.vak.naam) + '</strong>' +
+        '<span>' + esc(t.naam) + ' · ' + esc(mooieDatum(t.datum)) + '</span></div></a>';
+    }).join('') + '</div>';
+  }
+
+  function vakTegel(vak) {
+    var actief = vak.blokken.filter(function (b) { return !b.archief; });
+    var apps = vak.blokken.reduce(function (n, b) { return n + b.apps.length; }, 0);
+    var nieuw = vak.blokken.some(heeftNieuw);
+    return '<a class="tegel" style="--tint:' + tint(vak.id) + '" href="#' + esc(vak.id) + '">' +
+      (nieuw ? '<span class="badge">Nieuw</span>' : '') +
+      '<span class="emoji" aria-hidden="true">' + esc(vak.emoji) + '</span>' +
+      '<span class="naam">' + esc(vak.naam) + '</span>' +
+      '<span class="info">' + (actief.length ? aantal(apps, 'app', 'apps') : 'Geen actieve blokken') + '</span></a>';
+  }
+
+  function toonHome() {
+    document.title = 'Huiswerk van Thijs';
+    zetKop('📚 Huiswerk van Thijs');
+    var actief = manifest.vakken.filter(function (v) { return !v.archief; });
+    var archief = manifest.vakken.filter(function (v) { return v.archief; });
+    var html = komendeToetsen();
+    html += '<h2>Kies een vak</h2>';
+    html += actief.length
+      ? '<div class="tegels">' + actief.map(vakTegel).join('') + '</div>'
+      : '<p class="leeg">Er staan nog geen vakken klaar.</p>';
+    if (archief.length) {
+      html += '<details class="archief"><summary>Eerdere vakken (' + archief.length + ')</summary>' +
+        '<div class="tegels">' + archief.map(vakTegel).join('') + '</div></details>';
+    }
+    inhoud.innerHTML = html;
+  }
+
+  function blokRij(vak, blok) {
+    var sub = [aantal(blok.apps.length, 'app', 'apps')];
+    var toets = toetsTekst(blok);
+    return '<a class="rij" href="#' + esc(vak.id + '/' + blok.id) + '">' +
+      '<span class="icoon" aria-hidden="true">' + esc(blok.emoji || '📘') + '</span>' +
+      '<span class="tekst"><span class="titel">' + esc(blok.naam) +
+      (heeftNieuw(blok) ? ' <span class="badge">Nieuw</span>' : '') +
+      (toets ? ' <span class="label">' + esc(toets) + '</span>' : '') + '</span>' +
+      '<span class="sub">' + sub.join(' · ') + '</span></span>' +
+      '<span class="pijl" aria-hidden="true">›</span></a>';
+  }
+
+  function toonVak(vak) {
+    document.title = vak.naam + ' · Huiswerk van Thijs';
+    zetKop(esc(vak.emoji) + ' ' + esc(vak.naam), '#', '<a href="#">Overzicht</a>');
+    var actief = vak.blokken.filter(function (b) { return !b.archief; });
+    var archief = vak.blokken.filter(function (b) { return b.archief; });
+    var html = actief.length
+      ? '<div class="lijst">' + actief.map(function (b) { return blokRij(vak, b); }).join('') + '</div>'
+      : '<p class="leeg">Op dit moment geen blokken. Kijk bij eerdere blokken.</p>';
+    if (archief.length) {
+      html += '<details class="archief"' + (actief.length ? '' : ' open') + '><summary>Eerdere blokken (' + archief.length + ')</summary>' +
+        '<div class="lijst">' + archief.map(function (b) { return blokRij(vak, b); }).join('') + '</div></details>';
+    }
+    inhoud.innerHTML = html;
+  }
+
+  function appRij(app) {
+    return '<a class="rij" href="' + esc(encodeURI(app.pad)) + '?from=index">' +
+      '<span class="icoon" aria-hidden="true">✏️</span>' +
+      '<span class="tekst"><span class="titel">' + esc(app.titel) +
+      (isNieuw(app) ? ' <span class="badge">Nieuw</span>' : '') + '</span>' +
+      (app.omschrijving ? '<span class="sub">' + esc(app.omschrijving) + '</span>' : '') +
+      '</span><span class="pijl" aria-hidden="true">›</span></a>';
+  }
+
+  function toonBlok(vak, blok) {
+    document.title = blok.naam + ' · ' + vak.naam;
+    zetKop(esc(blok.emoji || vak.emoji) + ' ' + esc(blok.naam), '#' + vak.id,
+      '<a href="#">Overzicht</a> › <a href="#' + esc(vak.id) + '">' + esc(vak.naam) + '</a>');
+    var html = '';
+    var n = dagenTot(blok.toetsdatum);
+    if (n !== null && n >= 0) {
+      html += '<p class="leeg" style="margin:0 0 16px;color:var(--tekst)">📅 Toets op <strong>' + esc(mooieDatum(blok.toetsdatum)) +
+        '</strong> — ' + (n === 0 ? 'dat is vandaag, succes! 💪' : n === 1 ? 'dat is morgen!' : 'nog ' + n + ' dagen.') + '</p>';
+    }
+    html += blok.apps.length
+      ? '<div class="lijst">' + blok.apps.map(appRij).join('') + '</div>'
+      : '<p class="leeg">Hier staan nog geen apps.</p>';
+    inhoud.innerHTML = html;
+  }
+
+  function toonNietGevonden() {
+    zetKop('🤔 Niet gevonden', '#');
+    inhoud.innerHTML = '<div class="fout"><div class="groot">🧭</div><p>Deze pagina bestaat (niet meer).</p>' +
+      '<p><a href="#">Naar het overzicht</a></p></div>';
+  }
+
+  function route() {
+    if (!manifest) return;
+    var delen = decodeURIComponent(location.hash.replace(/^#\/?/, '')).split('/').filter(Boolean);
+    if (!delen.length) toonHome();
+    else {
+      var vak = vindVak(delen[0]);
+      if (!vak) toonNietGevonden();
+      else if (delen.length === 1) toonVak(vak);
+      else {
+        var blok = vak.blokken.filter(function (b) { return b.id === delen[1]; })[0];
+        if (blok) toonBlok(vak, blok); else toonNietGevonden();
+      }
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function toonFout(err) {
+    zetKop('📚 Huiswerk van Thijs');
+    var lokaal = location.protocol === 'file:';
+    inhoud.innerHTML = '<div class="fout"><div class="groot">😕</div>' +
+      '<p><strong>Oeps, het overzicht kon niet geladen worden.</strong></p>' +
+      '<p>Controleer of je internet hebt en probeer het opnieuw.</p>' +
+      '<button type="button" id="opnieuw">Opnieuw proberen</button>' +
+      '<p style="font-size:13px;color:var(--zacht);margin-top:20px">' +
+      (lokaal
+        ? 'Tip: open deze pagina via een webserver (<code>npx serve .</code>), niet als los bestand.'
+        : 'Voor ouders: <code>manifest.json</code> ontbreekt of is ongeldig. Lokaal: <code>node scripts/build-manifest.mjs</code>.') +
+      '<br><small>' + esc(err && err.message) + '</small></p></div>';
+    document.getElementById('opnieuw').onclick = laad;
+  }
+
+  function laad() {
+    inhoud.innerHTML = '<p class="leeg">Even laden…</p>';
+    fetch('manifest.json', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.vakken)) throw new Error('Onverwachte inhoud');
+        manifest = data;
+        var g = new Date(data.gegenereerd);
+        voet.textContent = isNaN(g) ? '' : 'Bijgewerkt op ' + g.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+        route();
+      })
+      .catch(toonFout);
+  }
+
+  window.addEventListener('hashchange', route);
+  laad();
+})();
+</script>
+</body>
+</html>
