@@ -104,6 +104,8 @@
   footer { margin-top: 40px; text-align: center; font-size: .8rem; color: var(--zacht); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
+<!-- Anonieme bezoekersteller (GoatCounter): geen cookies, geen namen, geen cijfers. Overzicht: https://ltmarx.goatcounter.com -->
+<script data-goatcounter="https://ltmarx.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -416,13 +418,18 @@
         if (!data || !Array.isArray(data.vakken)) throw new Error('Onverwachte inhoud');
         manifest = data;
         var g = new Date(data.gegenereerd);
-        voet.textContent = isNaN(g) ? '' : 'Bijgewerkt op ' + g.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+        voet.textContent = (isNaN(g) ? '' : 'Bijgewerkt op ' + g.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }) + ' · ') +
+          'We tellen anoniem hoe vaak de site gebruikt wordt: zonder cookies en zonder namen.';
         route();
       })
       .catch(toonFout);
   }
 
   window.addEventListener('hashchange', route);
+  // Ook vak- en blokpagina's (in de #) apart tellen. De eerste pagina telt GoatCounter zelf.
+  window.addEventListener('hashchange', function () {
+    try { if (window.goatcounter && window.goatcounter.count && location.hash.length > 1 && location.hash !== '#wie') window.goatcounter.count({ path: location.pathname + location.hash, title: document.title }); } catch (e) { /* teller geblokkeerd */ }
+  });
   laad();
 })();
 </script>

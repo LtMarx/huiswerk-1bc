@@ -155,6 +155,18 @@
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); if (!m) return '';
     return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
   }
+  // Anonieme teller (GoatCounter): telt het openen van een app en, als gebeurtenis, afgemaakte rondjes en toetsen.
+  // Nooit namen, antwoorden of cijfers meesturen.
+  var TELLER = 'https://ltmarx.goatcounter.com/count';
+  function laadTeller() {
+    if (location.protocol === 'file:' || document.querySelector('script[data-goatcounter]')) return;
+    var s = document.createElement('script'); s.async = true; s.src = '//gc.zgo.at/count.js';
+    s.setAttribute('data-goatcounter', TELLER);
+    document.head.appendChild(s);
+  }
+  function telGebeurtenis(soort, id, titel) {
+    try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: soort + ': ' + id, title: titel, event: true }); } catch (e) { /* teller geblokkeerd */ }
+  }
   function laadFonts() {
     if (document.getElementById('lm-fonts')) return;
     var l = document.createElement('link'); l.id = 'lm-fonts'; l.rel = 'stylesheet';
@@ -169,6 +181,7 @@
     app.className = 'lm-wrap';
     document.documentElement.classList.add('lm-actief');
     laadFonts();
+    laadTeller();
 
     try { valideer(cfg); } catch (e) {
       app.innerHTML = '<div class="lm-fout">Deze app is niet goed ingesteld: ' + esc(e.message) + '</div>';
@@ -791,6 +804,7 @@
     }
     function afronden() {
       oefenVandaag();
+      telGebeurtenis(run.mode === 'toets' ? 'oefentoets' : run.mode === 'kaartjes' ? 'kaartjes-klaar' : 'rondje-klaar', cfg.id, cfg.titel);
       if (run.mode === 'toets') {
         var tellen = run.log.filter(function (l) { return l.q.soort !== 'open'; });
         var open = run.log.filter(function (l) { return l.q.soort === 'open'; });

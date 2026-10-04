@@ -38,7 +38,8 @@ engels/02-unit-2/irregular-verbs.html
 ## Regels voor apps
 
 - Eén HTML-bestand per app, alleen relatieve paden. De enige toegestane lokale verwijzing is `../../_leermodule/v1/…` (CSS en JS van de leermodule).
-- Externe scripts alleen via `cdnjs.cloudflare.com` of `cdn.jsdelivr.net`; lettertypen via Google Fonts (de leermodule laadt ze al).
+- Externe scripts alleen via `cdnjs.cloudflare.com` of `cdn.jsdelivr.net`; lettertypen via Google Fonts (de leermodule laadt ze al). Enige uitzondering: de anonieme teller van GoatCounter (`gc.zgo.at/count.js`, overzicht op https://ltmarx.goatcounter.com), die al in `index.html` en de leermodule zit. Apps hoeven daar niets voor te doen.
+- **Statistieken:** stuur nooit namen, antwoorden of cijfers naar de teller. Alleen paginabezoeken en de gebeurtenissen `rondje-klaar`, `kaartjes-klaar` en `oefentoets` met het `id` van de app.
 - Elke app heeft een `<title>` (wordt de titel in het menu) en een `<meta name="description" content="...">` (korte omschrijving in het menu).
 - **localStorage-sleutels altijd met een prefix per app en per naam.** De site vraagt bezoekers hun voornaam (`huiswerk:naam`, lijst in `huiswerk:namen`; alleen op het apparaat) zodat klasgenoten de site ook kunnen gebruiken. De leermodule regelt dit vanzelf: `id: 'frans-u2-woordjes'` → sleutel `frans-u2-woordjes-v1@<naam>`. Patroon voor `id`: `<vak>-<blok-afkorting>-<app>`. Nooit een `id` hergebruiken of later veranderen. Een zelfstandige app gebruikt `Leermodule.Profiel.naam()` (of leest `huiswerk:naam`) en zet de naam in zijn eigen sleutels.
 - Geen eigen "terug naar overzicht"-knop: de Action voegt die bij het publiceren toe (vast linksonder). De leermodule houdt daar al ruimte voor vrij.

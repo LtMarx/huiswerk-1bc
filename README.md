@@ -40,7 +40,15 @@ Ja. Elke push naar `main` start de Action, die het menu opnieuw opbouwt en publi
 
 ### Namen (klasgenoten)
 
-Bij het eerste bezoek vraagt de site "Wie ben jij?". Oefeningen, toetscijfers en fouten worden per naam bewaard, alleen in de browser van dat apparaat (localStorage). Er zijn geen accounts, geen wachtwoorden en geen server. Er gaat ook niets naar internet of naar de repo. Via de knop 👤 rechtsboven wissel je van naam, bijvoorbeeld op een gedeelde iPad. Een naam is geen beveiliging: wie op hetzelfde apparaat een andere naam aantikt, ziet die resultaten.
+Bij het eerste bezoek vraagt de site "Wie ben jij?". Oefeningen, toetscijfers en fouten worden per naam bewaard, alleen in de browser van dat apparaat (localStorage). Er zijn geen accounts, geen wachtwoorden en geen server. Er gaat ook niets naar internet of naar de repo. Via de naamknop rechtsboven wissel je van naam, bijvoorbeeld op een gedeelde iPad. Een naam is geen beveiliging: wie op hetzelfde apparaat een andere naam aantikt, ziet die resultaten.
+
+### Statistieken
+
+Gebruik zie je op **https://ltmarx.goatcounter.com**. GoatCounter telt zonder cookies en zonder IP-adressen op te slaan.
+- **Pagina's:** hoe vaak het menu, een vak, een blok of een app is geopend, per dag, en op welk apparaat.
+- **Gebeurtenissen:** per app hoeveel rondjes zijn afgemaakt (`rondje-klaar`), hoeveel kaartjesrondes (`kaartjes-klaar`) en hoeveel oefentoetsen (`oefentoets`).
+- **Niet:** namen, antwoorden of cijfers. Die blijven op het apparaat van de leerling.
+- **Eigen bezoeken:** wil je die niet meetellen? Zet op elk apparaat in GoatCounter onder *Settings* de optie om je eigen bezoeken te negeren.
 
 ## GitHub Pages aanzetten (eenmalig)
 

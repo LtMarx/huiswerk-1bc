@@ -72,6 +72,8 @@ Ontwerp "Rustig schrift" (v1.2): een rustige achtergrond, één leesbare letter 
 - Terug-gebaar en terugknop van de telefoon gaan van een scherm terug naar het startscherm van de app. Midden in een toets vraagt de app eerst of je wilt stoppen.
 - Licht en donker thema volgen het apparaat. De vakkleur komt uit de mapnaam van het vak (dezelfde kleur als de tegel in het menu).
 
+**Statistieken**: de engine laadt de anonieme teller van GoatCounter. Het openen van een app telt als paginabezoek. Een afgemaakt rondje, een kaartjesronde en een oefentoets tellen als gebeurtenis (`rondje-klaar: <id>`, `kaartjes-klaar: <id>`, `oefentoets: <id>`). Er gaan nooit namen, antwoorden of cijfers mee.
+
 ## Een nieuwe app maken
 
 1. Kopieer `sjablonen/leerstof.html` of `sjablonen/woordjes.html` naar `<vak>/<nr-blok>/<naam>.html`.
