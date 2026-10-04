@@ -14,7 +14,7 @@ engels/02-unit-2/irregular-verbs.html
 - Numeriek voorvoegsel (`01-`, `02-`) bepaalt de volgorde en wordt niet getoond.
 - Weergavenaam = mapnaam zonder voorvoegsel, streepjes → spaties, eerste letter hoofdletter (`unite-1-bonjour` → "Unite 1 bonjour"), tenzij `info.json` een `naam` geeft.
 - `info.json` (optioneel) in vak- of blokmap: `{"naam": "Frans", "emoji": "🇫🇷", "toetsdatum": "2026-10-14"}`. Datum altijd `JJJJ-MM-DD`.
-- **Archief gaat automatisch** (in de browser, op de datum van vandaag): een blok verhuist naar "📦 Archief" in zijn vak
+- **Archief gaat automatisch** (in de browser, op de datum van vandaag): een blok verhuist naar "Archief" in zijn vak
   - de dag na `toetsdatum`, of
   - zonder toetsdatum: een maand na de eerste commit in de blokmap.
   - `"archief": true` = altijd archief (bijv. als de toets al geweest is maar de datum onbekend is). `"archief": false` = nooit automatisch.
@@ -32,6 +32,8 @@ engels/02-unit-2/irregular-verbs.html
 - Past iets echt niet in het format (bijv. een kaart- of tekenspel)? Bespreek eerst of het als optionele uitbreiding in `v1` kan. Lukt dat niet, maak dan een zelfstandige app die wel `../../_leermodule/v1/leermodule.css` en de klassen daaruit gebruikt, zodat de huisstijl gelijk blijft.
 - `_leermodule/v1/` alleen **uitbreiden** (nieuwe optionele velden/klassen), nooit bestaand gedrag of namen veranderen: alle apps laden het live. Ingrijpend anders → `_leermodule/v2/`.
 - Na een wijziging aan de engine: sjablonen en bestaande apps testen op 390px en ±1366px breed.
+- Huisstijl "Rustig schrift" (v1.2): Lexend, rustige achtergrond, vakkleur als accent, schrift alleen op het vraagkaartje en bij het cijfer, iconen als inline SVG (geen emoji in de interface). Het menu (`index.html`) gebruikt dezelfde stijl; houd die twee gelijk.
+- De engine leest de toetsdatum zelf uit `info.json` van het blok en toont een dagplan, oefenrondjes, voortgang en sterren. Zet de toetsdatum dus alleen in `info.json`.
 
 ## Regels voor apps
 

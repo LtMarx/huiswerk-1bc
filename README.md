@@ -28,7 +28,7 @@ Alle leer-apps gebruiken de gedeelde engine en huisstijl in [`_leermodule/`](_le
 ```
 
 - `toetsdatum` (JJJJ-MM-DD) → verschijnt bij "Komende toetsen" met het aantal dagen.
-- **Archief per vak, automatisch:** een blok gaat naar "📦 Archief" in zijn vak
+- **Archief per vak, automatisch:** een blok gaat naar "Archief" in zijn vak
   - de dag na de `toetsdatum`, of
   - als er geen toetsdatum is: een maand nadat het blok is aangemaakt (eerste commit in die map).
 - `archief: true` → blok staat altijd in het archief. `archief: false` → blok wordt nooit automatisch gearchiveerd.

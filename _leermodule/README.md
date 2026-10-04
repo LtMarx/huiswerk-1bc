@@ -1,13 +1,13 @@
 # Leermodule: het standaardformat voor huiswerk-apps
 
-Elke leer-app op de site gebruikt dezelfde opbouw, huisstijl en code. Een app is alleen nog een HTML-bestand met **inhoud als data**. Alles wat Thijs ziet en doet, komt uit de gedeelde engine in deze map.
+Elke leer-app op de site gebruikt dezelfde opbouw, huisstijl en code. Een app is alleen nog een HTML-bestand met **inhoud als data**. Alles wat leerlingen zien en doen, komt uit de gedeelde engine in deze map.
 
 ```
 _leermodule/
 ├── README.md              ← dit document: het format
 ├── v1/
-│   ├── leermodule.css     ← huisstijl "schrift" (licht + donker)
-│   └── leermodule.js      ← engine: leren, kaartjes, oefenen, toetsen
+│   ├── leermodule.css     ← huisstijl "Rustig schrift" (licht + donker)
+│   └── leermodule.js      ← engine: uitleg, kaartjes, oefenrondjes, sterren, oefentoets
 └── sjablonen/
     ├── leerstof.html      ← uitleg + kaartjes + meerkeuze/typ/open vragen
     └── woordjes.html      ← woordjes voor een vreemde taal
@@ -15,34 +15,62 @@ _leermodule/
 
 De map begint met `_`, dus hij verschijnt niet in het menu. De sjablonen zijn wel te bekijken op `<site>/_leermodule/sjablonen/leerstof.html`.
 
-## Wat Thijs krijgt (elke app hetzelfde)
+## Wat leerlingen krijgen (elke app hetzelfde)
+
+Ontwerp "Rustig schrift" (v1.2): een rustige achtergrond, één leesbare letter (Lexend), de vakkleur als accent. Het schrift (lijntjes en rode kantlijn) zie je alleen op het vraagkaartje en bij het rood omcirkelde cijfer.
 
 **Startscherm**
-- *Wat wil je leren?*: onderdelen (paragrafen, lessen) aan- en uitvinken. De keuze wordt onthouden.
-- Daarnaast drie stappen:
-  1. **Leren**: *Uitleg lezen* (leerstof in uitklapblokken, woordenlijst met 🔊) en *Kaartjes* (kijken, omdraaien, "Ken ik" / "Nog niet"; wat je nog niet kent, komt terug).
-  2. **Oefenen**: vragen met directe feedback en uitleg. Fouten komen een paar vragen later terug, tot alles goed is.
-  3. **Toetsen**: zonder hulp, met een cijfer van 1 tot 10 (rood omcirkeld), alle antwoorden nagekeken, en de knop "Oefen mijn fouten". De laatste cijfers en de fouten van de vorige toets worden onthouden.
+- Bovenaan: *Overzicht* (terug naar het menu), de dagenreeks en de naam.
+- Kop met vak, titel en de toetsdatum met het aantal dagen. Die datum komt uit `info.json` van het blok, dus die hoef je niet in de app te zetten.
+- **Vandaag**: de slimste volgende stap met één knop *Ga verder*.
+  - Is het onderdeel nog onbekend en is er uitleg? Dan eerst de uitleg lezen.
+  - Anders een oefenrondje van het zwakste onderdeel.
+  - Kort voor de toets, of als alles gekend is: een oefentoets.
+  - Met een toetsdatum staat er ook een dagdoel, bijvoorbeeld "Doel vandaag: 2 rondjes", berekend op wat nog niet gekend is.
+- **Uitleg**, **Kaartjes** en **Oefentoets** als drie tegels.
+- **Jouw voortgang** per onderdeel: hoeveel vragen gekend zijn, een balk en 0 tot 3 sterren. Tik op een onderdeel om het te oefenen.
+- **Laatste oefentoets** met het cijfer.
+- **Instellingen**, standaard ingeklapt: welke onderdelen, welke kant op (woordjes), soort vragen (toepassen).
+
+**Oefenen in rondjes**
+- Een rondje heeft 12 vragen (`ronde` in de instellingen). Eerst komt wat je nog niet kent, dan wat je net kent, dan wat het langst geleden is.
+- Feedback en de knop *Volgende* staan altijd vast onderaan het scherm. Een fout komt later in het rondje terug.
+- Bij typvragen kun je na een fout kiezen voor *Ik had het goed (tikfout)*.
+- De app onthoudt per vraag hoe goed je hem kent: 0 = nog niet, 1 = gekend (laatste keer goed), 2-3 = zeker (meerdere keren achter elkaar goed). Alleen de eerste poging in een rondje telt.
+- **Sterren per onderdeel**:
+  - 1 ster bij de helft gekend.
+  - 2 sterren als alles gekend is.
+  - 3 sterren als je alles minstens twee keer achter elkaar goed had.
+- Na een rondje volgt een scherm met de nieuwe sterren, "+N gekend", de dagenreeks en hoeveel vragen je nog nodig hebt voor de volgende ster.
+
+**Kaartjes**: rondjes van 20 kaartjes, de minst gekende eerst. "Ken ik" of "Nog niet"; wat je nog niet kent, komt terug. Kaartjes tellen niet mee voor de voortgang. Die wordt alleen gemeten met vragen.
+
+**Oefentoets**
+- Zonder hulp, met een cijfer van 1 tot 10.
+- De vragen worden eerlijk verdeeld over de gekozen onderdelen.
+- Open vragen kijk je zelf na; die tellen niet mee voor het cijfer (ze staan apart in de uitslag).
+- Na de toets: alle antwoorden nagekeken, en de knop "Oefen mijn fouten". Op het startscherm staat daarna een melding met de fouten van de vorige toets.
 
 **Namen**
 - Wie de site of een app voor het eerst opent, typt een voornaam (of tikt een eerder gebruikte naam aan).
-- Voortgang, cijfers en fouten worden per naam bewaard onder `'<id>-v1@<naam>'`, alleen op dat apparaat.
-- Met de knop 👤 rechtsboven wissel je van naam.
+- Voortgang, cijfers en fouten worden per naam bewaard onder `'<id>-v1@<naam>'`, alleen op dat apparaat. De dagenreeks staat onder `'huiswerk:dagen@<naam>'`; het menu toont die ook.
+- Met de naamknop rechtsboven wissel je van naam.
 - De naam deelt de app met het menu via `huiswerk:naam` en `huiswerk:namen`; in code via `Leermodule.Profiel.naam()`, `.namen()` en `.kies(naam)`.
-- Voortgang van vóór v1.1 (sleutel zonder naam) gaat één keer over naar de eerste naam die de app opent.
+- Voortgang van vóór v1.1 (sleutel zonder naam) gaat één keer over naar de eerste naam die de app opent. Oude opgeslagen gegevens blijven geldig in v1.2; het geheugen per vraag begint dan bij 0.
 
 **Laptop en mobiel**
-- Op een laptop staan "kiezen" en de drie stappen naast elkaar. Op iPad en telefoon staan ze onder elkaar.
-- Alle knoppen zijn minstens 44px hoog. Er is ruimte onderaan voor de terugknop van de site.
+- Op een laptop staan "Vandaag" en de voortgang naast elkaar. Op iPad en telefoon staan ze onder elkaar.
+- Alle knoppen zijn minstens 44px hoog.
+- De app heeft een eigen terugknop in de kop. De zwevende terugknop van de site wordt in leermodule-apps verborgen.
 - Toetsenbord op een laptop:
   - `Enter`: controleren / volgende
-  - `1`–`9`: meerkeuze-optie kiezen
+  - `1`–`9` of `A`–`D`: meerkeuze-optie kiezen
   - `spatie`: kaartje omdraaien
   - `→` / `←`: ken ik / nog niet
   - `Ctrl+Enter`: antwoord van een open vraag bekijken
   - Op aanraakschermen zijn de toetshints verborgen.
 - Terug-gebaar en terugknop van de telefoon gaan van een scherm terug naar het startscherm van de app. Midden in een toets vraagt de app eerst of je wilt stoppen.
-- Licht en donker thema volgen het apparaat.
+- Licht en donker thema volgen het apparaat. De vakkleur komt uit de mapnaam van het vak (dezelfde kleur als de tegel in het menu).
 
 ## Een nieuwe app maken
 
@@ -60,6 +88,9 @@ Leermodule.start({
   taal: 'fr',                     // alleen bij woordjes: fr | en | de | es | la (of een eigen taal-object, zie onder)
   toets: { aantallen: [10, 15, 25], standaard: 15 },   // optioneel; standaard [10, 20, 30] en 20
   teksten: { top: 'Magnifique!' },                     // optioneel; tekst bij een 9 of hoger
+  ronde: 12,                      // optioneel; aantal vragen per oefenrondje (standaard 12)
+  toetsdatum: '2026-10-09',       // optioneel; normaal uit info.json van het blok
+  kleur: 30,                      // optioneel; tint 0-360 voor de vakkleur (standaard uit de vakmapnaam)
   onderdelen: [ /* minstens één, zie hieronder */ ]
 });
 ```
@@ -89,7 +120,7 @@ De engine herkent het soort vraag aan de velden:
 |---|---|---|
 | Meerkeuze | `vraag`, `opties: [...]`, `antwoord: 1` (**0 = eerste optie**), `uitleg` | automatisch; opties worden gehusseld (`husselen: false` om dat uit te zetten, bijv. bij "Alle bovenstaande") |
 | Typvraag | `vraag`, `antwoord: 'Parijs'` (of een lijst), `ook: [...]` andere goede antwoorden, `uitleg`, optioneel `taal: 'fr'` | automatisch; hoofdletters, leestekens en `?!.` tellen niet; een accentfout is half goed |
-| Open vraag | `vraag`, `model: 'het goede antwoord'` | Thijs vergelijkt met het model en kiest Goed / Half goed / Fout |
+| Open vraag | `vraag`, `model: 'het goede antwoord'` | de leerling vergelijkt met het model en kiest Goed / Half goed / Fout (telt niet mee voor het cijfer van de oefentoets) |
 
 Extra: `toepassen: true` markeert een toepassingsvraag. Heeft een app zowel kennis- als toepassingsvragen, dan verschijnt op het startscherm de keuze *Alle vragen / Alleen toepassen*.
 
@@ -112,7 +143,7 @@ Nakijkregels voor woorden:
   - Bij `nl` en `en` mag het lidwoord weg ("jongen" is goed voor "de jongen").
   - Bij `fr`, `de` en `es` is het verplicht: lidwoord vergeten of het verkeerde lidwoord = half goed.
 - Een accentfout is half goed. Onder het invoerveld staan knoppen met de accentletters van de taal.
-- 🔊 spreekt het vreemde woord uit (Web Speech API). Dat werkt niet bij Latijn.
+- De luidsprekerknop spreekt het vreemde woord uit (Web Speech API). Dat werkt niet bij Latijn.
 - Dubbele woorden in verschillende onderdelen worden één keer gevraagd.
 - Het startscherm heeft de keuze *Zoals in het boek / vreemd → NL / NL → vreemd*.
 
