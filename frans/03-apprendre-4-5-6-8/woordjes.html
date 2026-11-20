@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frans – Apprendre 4, 5, 6 en 8</title>
+<meta name="description" content="Woordjes van Apprendre 4, 6 en 8 en het bezittelijk voornaamwoord (mon, ma, mes) oefenen en toetsen">
+<link rel="stylesheet" href="../../_leermodule/v1/leermodule.css">
+</head>
+<body>
+<div id="app"><noscript>Zet JavaScript aan om deze app te gebruiken.</noscript></div>
+<script src="../../_leermodule/v1/leermodule.js"></script>
+<script>
+/* Toets 30 november: Apprendre 4, 5, 6 en 8. Woordjes overgenomen uit het boek (gelijk aan de module La famille);
+   Apprendre 5 (Grammaire II, het bezittelijk voornaamwoord) van de foto van 20 november. */
+Leermodule.start({
+  id: 'frans-a4568-woordjes',
+  titel: 'Frans oefenen',
+  ondertitel: 'Apprendre 4, 5, 6 en 8: woordjes en het bezittelijk voornaamwoord',
+  taal: 'fr',
+  teksten: { top: 'Magnifique! Uitstekend gedaan.' },
+  onderdelen: [
+  {id:'a4', titel:'Apprendre 4', sub:'Écouter – vocabulaire', richting:'herkennen', woorden:[
+    ['gescheiden (scheiden)','divorcé (divorcer)'],['getrouwd (trouwen)','marié (se marier)'],['de halfbroer','le demi-frère'],
+    ['het enig kind','le fils / la fille unique',null,['le fils unique','la fille unique','le fils / la fille unique']],
+    ['alleen','seul(e)'],['het kind','l’enfant (m / f)',null,['l’enfant']],['de buurvrouw','la voisine'],['het weekend','le weekend'],
+    ['de buurman','le voisin'],['de oom','l’oncle (m)'],['de tante','la tante'],['de vriend','le copain'],['de vriendin','la copine'],
+    ['de trein','le train'],['wacht! (wachten op)','attends ! (attendre)'],['de boodschap','le message'],['luisteren (naar)','écouter'],['de slaapkamer','la chambre']
+  ]},
+  {id:'a5', titel:'Apprendre 5', sub:'Grammaire II – het bezittelijk voornaamwoord',
+    uitleg: [
+      { kop: 'Van wie is het?', open: true, html: `
+        <p>Het bezittelijk voornaamwoord geeft aan <span class="mark">van wie iets is</span>.</p>
+        <p><span class="voorbeeld">C’est le père de Nathan.</span> = Het is de vader van Nathan.<br>
+           <span class="voorbeeld">C’est son père.</span> = Het is zijn vader.</p>
+        <p>De vorm hangt af van het zelfstandig naamwoord dat erachter komt: <strong>mannelijk</strong>, <strong>vrouwelijk</strong> of <strong>meervoud</strong>.</p>
+        <table>
+          <tr><th></th><th>mannelijk enkelvoud</th><th>vrouwelijk enkelvoud</th><th>meervoud</th></tr>
+          <tr><td>mijn</td><td><strong>mon</strong> frère</td><td><strong>ma</strong> sœur</td><td><strong>mes</strong> parents</td></tr>
+          <tr><td>jouw</td><td><strong>ton</strong> frère</td><td><strong>ta</strong> sœur</td><td><strong>tes</strong> parents</td></tr>
+          <tr><td>zijn</td><td><strong>son</strong> frère</td><td><strong>sa</strong> sœur</td><td><strong>ses</strong> parents</td></tr>
+          <tr><td>haar</td><td><strong>son</strong> frère</td><td><strong>sa</strong> sœur</td><td><strong>ses</strong> parents</td></tr>
+        </table>
+        <p class="let-op"><strong>son, sa, ses</strong> betekent zowel <em>zijn</em> als <em>haar</em>. Je kiest de vorm bij het woord erachter, niet bij wie het is:<br>
+          <span class="voorbeeld">Voilà Adam avec son frère.</span> = Daar is Adam met zijn broer.<br>
+          <span class="voorbeeld">Voilà Lisa avec son frère.</span> = Daar is Lisa met haar broer.</p>` },
+      { kop: 'Let op: klinker of stomme h', open: true, html: `
+        <p>Begint een <strong>vrouwelijk</strong> woord met een klinker of een stomme h? Dan gebruik je in het enkelvoud de mannelijke vorm: <span class="mark">mon, ton of son</span>.</p>
+        <table>
+          <tr><th></th><th>niet</th><th>wel</th></tr>
+          <tr><td>mijn adres</td><td><s>ma adresse</s></td><td><strong>mon adresse</strong></td></tr>
+          <tr><td>jouw school</td><td><s>ta école</s></td><td><strong>ton école</strong></td></tr>
+          <tr><td>zijn / haar verhaal</td><td><s>sa histoire</s></td><td><strong>son histoire</strong></td></tr>
+        </table>
+        <p class="tip">Tip: zie je een klinker en is het enkelvoud? Kies dan mon, ton of son.</p>` }
+    ],
+    vragen: [
+      { vraag: 'Waar hangt de vorm van het bezittelijk voornaamwoord van af?', opties: ['Van het zelfstandig naamwoord erachter (mannelijk, vrouwelijk of meervoud)', 'Van wie het is (een jongen of een meisje)', 'Van het werkwoord in de zin'], antwoord: 0, uitleg: 'mon frère, ma sœur, mes parents: het woord erachter bepaalt de vorm.' },
+      { vraag: 'Vertaal: <em>mijn broer</em>', antwoord: 'mon frère', ook: ['mon frere'], taal: 'fr', uitleg: 'frère is mannelijk → mon' },
+      { vraag: 'Vertaal: <em>mijn zus</em>', antwoord: 'ma sœur', ook: ['ma soeur'], taal: 'fr', uitleg: 'sœur is vrouwelijk → ma' },
+      { vraag: 'Vertaal: <em>mijn ouders</em>', antwoord: 'mes parents', taal: 'fr', uitleg: 'meervoud → mes' },
+      { vraag: 'Vertaal: <em>jouw zus</em>', antwoord: 'ta sœur', ook: ['ta soeur'], taal: 'fr', uitleg: 'vrouwelijk → ta' },
+      { vraag: 'Vertaal: <em>jouw ouders</em>', antwoord: 'tes parents', taal: 'fr', uitleg: 'meervoud → tes' },
+      { vraag: 'Vertaal: <em>zijn vader</em>', antwoord: 'son père', ook: ['son pere'], taal: 'fr', uitleg: 'père is mannelijk → son' },
+      { vraag: 'Vertaal: <em>haar vader</em>', antwoord: 'son père', ook: ['son pere'], taal: 'fr', uitleg: 'père is mannelijk → son, ook als het van een meisje is.' },
+      { vraag: 'Vertaal: <em>zijn moeder</em>', antwoord: 'sa mère', ook: ['sa mere'], taal: 'fr', uitleg: 'mère is vrouwelijk → sa, ook als het van een jongen is.' },
+      { vraag: 'Vertaal: <em>haar ouders</em>', antwoord: 'ses parents', taal: 'fr', uitleg: 'meervoud → ses' },
+      { vraag: 'Vertaal: <em>mijn adres</em>', antwoord: 'mon adresse', taal: 'fr', uitleg: 'adresse is vrouwelijk, maar begint met een klinker → mon' },
+      { vraag: 'Vertaal: <em>jouw school</em>', antwoord: 'ton école', ook: ['ton ecole'], taal: 'fr', uitleg: 'école begint met een klinker → ton' },
+      { vraag: 'Vertaal: <em>haar verhaal</em>', antwoord: 'son histoire', taal: 'fr', uitleg: 'histoire begint met een stomme h → son' },
+      { vraag: 'Kies: <em>Voilà Lisa avec ___ frère.</em>', opties: ['son', 'sa', 'ses'], antwoord: 0, husselen: false, uitleg: 'frère is mannelijk → son (= haar broer).' },
+      { vraag: 'Kies: <em>Voilà Adam avec ___ sœur.</em>', opties: ['son', 'sa', 'ses'], antwoord: 1, husselen: false, uitleg: 'sœur is vrouwelijk → sa (= zijn zus).' },
+      { vraag: 'Kies: <em>C’est le père de Nathan. C’est ___ père.</em>', opties: ['son', 'sa', 'ses'], antwoord: 0, husselen: false, uitleg: 'père is mannelijk → son.' },
+      { vraag: 'Welke is goed?', opties: ['ton école', 'ta école'], antwoord: 0, husselen: false, uitleg: 'Vrouwelijk woord met een klinker → ton.' },
+      { vraag: 'Welke is goed?', opties: ['mon adresse', 'ma adresse'], antwoord: 0, husselen: false, uitleg: 'Vrouwelijk woord met een klinker → mon.' },
+      { vraag: 'Waarom zeg je <em>son histoire</em> en niet <em>sa histoire</em>?', opties: ['Omdat histoire met een stomme h begint', 'Omdat histoire mannelijk is', 'Omdat het van een jongen is'], antwoord: 0, uitleg: 'Klinker of stomme h in het enkelvoud → mon, ton, son.' },
+      { vraag: 'Kies: <em>J’aime ___ chat.</em> (mijn)', opties: ['mon', 'ma', 'mes'], antwoord: 0, husselen: false, uitleg: 'le chat is mannelijk → mon chat.' },
+      { vraag: 'Kies: <em>C’est ___ copine.</em> (zijn)', opties: ['son', 'sa', 'ses'], antwoord: 1, husselen: false, uitleg: 'la copine is vrouwelijk → sa copine.' },
+      { vraag: 'Kies: <em>Voilà ___ grands-parents.</em> (jouw)', opties: ['ton', 'ta', 'tes'], antwoord: 2, husselen: false, uitleg: 'meervoud → tes.' }
+    ]},
+  {id:'a6', titel:'Apprendre 6', sub:'Parler – vocabulaire', woorden:[
+    ['organiseren','organiser'],['welke','quel'],['oud','vieux'],['het dier','l’animal (m)'],['dol zijn op','adorer'],
+    ['de muziek','la musique'],['bij (thuis)','chez'],['schattig','mignon'],['de metro','le métro'],
+    ['alleen maar','seulement'],['naar huis gaan','rentrer'],['bovendien','en plus'],['lopend','à pied'],['de kat','le chat'],
+    ['de dag','la journée'],['het geluk','la chance'],['geweldig','génial'],['zoals','comme']
+  ]},
+  {id:'a8', titel:'Apprendre 8', sub:'Écrire – vocabulaire', woorden:[
+    ['de foto','la photo'],['klaargemaakt, voorbereid (klaarmaken, voorbereiden)','préparé (préparer)'],['goed, lekker','bon, bonne'],['de taart','le gâteau'],
+    ['de bloem','la fleur'],['zij lacht (lachen)','elle rit (rire)'],['de man, echtgenoot','le mari'],['grappig','drôle'],['de vakantie','les vacances (f pl)'],
+    ['augustus','août',null,['août','aout']],['mama','maman'],['de olijf','l’olive (f)'],['op','sur'],
+    ['de tafel','la table'],['iedereen','tout le monde'],['altijd','toujours'],['sinds','depuis']
+  ]}
+  ]
+});
+</script>
+</body>
+</html>
